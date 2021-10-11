@@ -1,0 +1,18 @@
+.link {
+  padding: 0 1.5rem;
+  margin: 1rem 1px;
+  border-left: 1px solid var(--dark-cornflower-blue);
+  text-decoration: none;
+}
+
+.link, .link:active {
+  color: var(--dark-cornflower-blue);
+}
+
+.link:first-child {
+  border-left: 0;
+}
+
+.link:hover {
+  color: var(--true-blue);
+}
