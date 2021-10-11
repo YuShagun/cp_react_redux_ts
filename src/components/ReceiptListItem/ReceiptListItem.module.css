@@ -1,0 +1,23 @@
+.receiptListItem {
+  border-top: 1px solid var(--manatee);
+  padding: 1rem;
+  margin: 0 1rem;
+}
+
+.receiptListItem:first-child {
+  border-top: 0;
+}
+
+.receiptListImage {
+  max-height: 150px;
+}
+
+.receiptListData {
+  margin-left: 1.5rem;
+  min-height: 150px;
+  justify-content: space-around;
+}
+
+.receiptListData .row {
+  align-items: center;
+}
