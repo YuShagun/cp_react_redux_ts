@@ -12,18 +12,18 @@ import Home from './pages/Home';
 import logo from './logo.svg';
 import './App.css';
 import Header from './components/Header/Header';
+import Receipt from './pages/Receipt';
 
 
 
 function App() {
   return (
     <Router>
-      <Header/>
-      
+      <Header />
+
       <Switch>
-        <Route path="/about">
-          <About />
-        </Route>
+        <Route path="/receipt/:id" component={Receipt} />
+        <Route path="/about" component={About} />
         <Route path="/app">
 
           <div className="App">
@@ -75,9 +75,7 @@ function App() {
           </div>
 
         </Route>
-        <Route path="/">
-          <Home />
-        </Route>
+        <Route path="/" component={Home} />
       </Switch>
     </Router >
   );

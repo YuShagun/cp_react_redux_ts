@@ -29,6 +29,4 @@ export const { set } = receiptSlice.actions;
 
 export const selectReceipts = (state: RootState) => state.receipt.data;
 
-export const selectReceiptById = (state: RootState, id: string) => state.receipt.data.get(id); 
-
 export default receiptSlice.reducer;

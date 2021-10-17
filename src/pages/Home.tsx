@@ -14,7 +14,7 @@ export default function Home() {
       margin: 'auto',
       alignItems: 'center'
     }}>
-      {Array.from(receipts.values(), (value => <ReceiptListItem {...value}/>))}
+      {Array.from(receipts.entries(), (([ key, value ]) => <ReceiptListItem {...value} id={key}/>))}
     </div>
   )
 }
