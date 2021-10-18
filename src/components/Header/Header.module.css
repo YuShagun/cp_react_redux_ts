@@ -1,8 +1,7 @@
 .link {
-  padding: 0 1.5rem;
-  margin: 1rem 1px;
+  padding: 0 1.5rem !important;
+  margin: 1rem 1px !important;
   border-left: 1px solid var(--dark-cornflower-blue);
-  text-decoration: none;
 }
 
 .link, .link:active {
