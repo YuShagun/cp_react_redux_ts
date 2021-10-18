@@ -1,17 +1,15 @@
 .link {
   padding: 0 1.5rem !important;
-  margin: 1rem 1px !important;
-  border-left: 1px solid var(--dark-cornflower-blue);
 }
 
 .link, .link:active {
   color: var(--dark-cornflower-blue);
 }
 
-.link:first-child {
-  border-left: 0;
-}
-
 .link:hover {
   color: var(--true-blue);
+}
+
+.linkContainer {
+  margin: 1rem 1px;
 }
