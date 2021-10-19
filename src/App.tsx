@@ -8,11 +8,12 @@ import {
 import { Counter } from './features/counter/Counter';
 import About from './pages/About';
 import Home from './pages/Home';
+import Receipt from './pages/Receipt';
+import ReceiptUpload from './pages/ReceiptUpload';
 
 import logo from './logo.svg';
 import './App.css';
 import Header from './components/Header/Header';
-import Receipt from './pages/Receipt';
 
 
 
@@ -23,6 +24,7 @@ function App() {
 
       <Switch>
         <Route path="/receipt/:id" component={Receipt} />
+        <Route path='/upload' component={ReceiptUpload} />
         <Route path="/about" component={About} />
         <Route path="/app">
 
