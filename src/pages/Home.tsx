@@ -1,12 +1,11 @@
 import React from 'react'
-import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { useAppSelector } from '../app/hooks';
 
 import ReceiptListItem from '../components/ReceiptListItem/ReceiptListItem';
 import { selectReceipts } from '../features/receipt/receiptSlice';
 
 export default function Home() {
   const receipts = useAppSelector(selectReceipts);
-  const dispatch = useAppDispatch();
 
   return (
     <div className='col' style={{
@@ -14,7 +13,7 @@ export default function Home() {
       margin: 'auto',
       alignItems: 'center'
     }}>
-      {Array.from(receipts.entries(), (([ key, value ]) => <ReceiptListItem {...value} id={key}/>))}
+      {Array.from(Object.entries(receipts), (([ key, value ]) => <ReceiptListItem key={key} {...value} id={key}/>))}
     </div>
   )
 }

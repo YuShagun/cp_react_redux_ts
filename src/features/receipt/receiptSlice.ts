@@ -5,13 +5,17 @@ import { Receipt } from '../../types';
 
 import data from '../../data.json';
 
+interface ReceiptStateData {
+  [key: string]: Receipt;
+};
+
 export interface ReceiptState {
-  data: Map<string, Receipt>;
+  data: ReceiptStateData;
   status: 'idle' | 'loading' | 'failed';
 };
 
 const initialState: ReceiptState = {
-  data: new Map(Object.entries(data)),
+  data,
   status: 'idle',
 };
 
@@ -19,7 +23,7 @@ export const receiptSlice = createSlice({
   name: 'receipt',
   initialState,
   reducers: {
-    set: (state, action: PayloadAction<Map<string, Receipt>>) => {
+    set: (state, action: PayloadAction<ReceiptStateData>) => {
       state.data = action.payload;
     },
   },

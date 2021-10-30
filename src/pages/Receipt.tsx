@@ -8,7 +8,7 @@ import { ReceiptRouteParams } from '../types';
 export default function ReceiptView() {
   const { id } = useParams<ReceiptRouteParams>();
 
-  const receipt = useAppSelector(selectReceipts).get(id);
+  const receipt = useAppSelector(selectReceipts)[id];
 
   return receipt ? (
     <div className='col' style={{
@@ -18,7 +18,7 @@ export default function ReceiptView() {
     }}>
       <div className='row' style={{ margin: '1.5rem' }}>
         <div className='col' style={{ maxWidth: 400 }}>
-          <img src={`/photos/${receipt?.imagePath}`} style={{ maxWidth: '100%' }}></img>
+          <img src={`/photos/${receipt?.imagePath}`} style={{ maxWidth: '100%' }} alt="Receipt"></img>
         </div>
         <ProductList products={receipt?.products} />
       </div >
