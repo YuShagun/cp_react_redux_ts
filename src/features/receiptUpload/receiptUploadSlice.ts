@@ -1,17 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 
-import { Receipt } from '../../types';
-
 export interface ReceiptUploadState {
   data: {
-    image?: string;
+    image: string;
   };
   status: 'idle' | 'loading' | 'failed';
 };
 
 const initialState: ReceiptUploadState = {
-  data: {},
+  data: {
+    image: ''
+  },
   status: 'idle',
 };
 
