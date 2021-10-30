@@ -9,7 +9,7 @@ import { Counter } from './features/counter/Counter';
 import About from './pages/About';
 import Home from './pages/Home';
 import Receipt from './pages/Receipt';
-import ReceiptUpload from './pages/ReceiptUpload';
+import ReceiptUpload from './pages/ReceiptUpload/ReceiptUpload';
 
 import logo from './logo.svg';
 import './App.css';
