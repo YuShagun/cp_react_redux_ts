@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { ReceiptListItemProps } from './types';
@@ -14,7 +14,7 @@ export default function ReceiptListItem({
 
   return (
     <Link to={`/receipt/${id}`} className={`row ${styles.receiptListItem}`}>
-      <img src={`/photos/${imagePath}`} className={styles.receiptListImage}></img>
+      <img src={`/photos/${imagePath}`} className={styles.receiptListImage} alt="Receipt"></img>
       <div className={`col ${styles.receiptListData}`}>
         <div className='row'>{date}</div>
         <div className='row'>Place</div>
