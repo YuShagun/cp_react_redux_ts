@@ -9,8 +9,6 @@ import styles from './Header.module.css';
 
 export default function Header() {
 
-  console.log(styles);
-
   return (
     <div className="row">
       <div className="col"></div>
