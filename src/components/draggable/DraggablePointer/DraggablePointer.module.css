@@ -3,7 +3,7 @@
   position: absolute;
   width: 15px;
   height: 15px;
-  background-color: cyan;
+  background-color: rgba(0, 0, 0, 0.5);
   border: 1px solid darkcyan;
   border-radius: 50%;
   z-index: 1000;
