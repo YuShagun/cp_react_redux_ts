@@ -1,21 +1,31 @@
 import React, { useCallback, useRef, useEffect } from 'react';
 
-import { DraggableSurfaceProps } from './types';
-import { getNewPositionWithinBounds, getPointerPosition } from './utils';
-
-import styles from './DraggableSurface.module.css';
+import { useAppDispatch } from '../../../app/hooks';
 import draggablePointerStyles from '../DraggablePointer/DraggablePointer.module.css';
+import DraggablePointer from '../DraggablePointer/DraggablePointer';
+import ImageOverlay from '../ImageOverlay/ImageOverlay';
+
+import { DraggableSurfaceProps } from './types';
+import { getElPositionWithShift, getNewPositionWithinBounds, getPointerPosition } from './utils';
+import styles from './DraggableSurface.module.css';
+import { setPoints } from '../../../features/receiptUpload/receiptUploadSlice';
+import { POINTER_SIZE } from '../../../constants';
 
 export const DraggableSurface: React.FC<DraggableSurfaceProps> = ({
   width,
   height,
-  children
 }) => {
   const moving = useRef(false);
   const oldPointerPosition = useRef({ x: 0, y: 0 });
   const target = useRef<HTMLElement | null>(null);
   const surfaceDiv = useRef<HTMLDivElement | null>(null);
 
+  const topLeftRef = useRef<HTMLDivElement | null>(null);
+  const topRightRef = useRef<HTMLDivElement | null>(null);
+  const bottomLeftRef = useRef<HTMLDivElement | null>(null);
+  const bottomRightRef = useRef<HTMLDivElement | null>(null);
+
+  const dispatch = useAppDispatch();
 
   const startDrag = useCallback((event: React.MouseEvent | React.TouchEvent) => {
     const curTarget = event.target as HTMLElement;
@@ -43,11 +53,13 @@ export const DraggableSurface: React.FC<DraggableSurfaceProps> = ({
     };
 
     const rect = surfaceDiv.current ? surfaceDiv.current.getBoundingClientRect() : new DOMRect();
-
     const newPosition = getNewPositionWithinBounds(target.current.style, distance, target.current.getBoundingClientRect(), rect);
 
     target.current.style.left = `${newPosition.left}px`;
     target.current.style.top = `${newPosition.top}px`;
+
+    const points = [topLeftRef.current, topRightRef.current, bottomLeftRef.current, bottomRightRef.current];
+    dispatch(setPoints(points.map((el) => getElPositionWithShift(el, { top: POINTER_SIZE / 2, left: POINTER_SIZE / 2 }))));
 
     oldPointerPosition.current = position;
   }, []);
@@ -79,7 +91,11 @@ export const DraggableSurface: React.FC<DraggableSurfaceProps> = ({
       onMouseUp={endDrag}
       onTouchEnd={endDrag}
     >
-      {children}
+      <ImageOverlay width={width} height={height} />
+      <DraggablePointer ref={topRightRef} top={30} left={width - 30} />
+      <DraggablePointer ref={topLeftRef} top={30} left={30} />
+      <DraggablePointer ref={bottomLeftRef} top={height - 30} left={30} />
+      <DraggablePointer ref={bottomRightRef} top={height - 30} left={width - 30} />
     </div>
   )
 }

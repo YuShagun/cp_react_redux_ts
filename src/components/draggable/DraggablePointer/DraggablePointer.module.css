@@ -1,10 +1,8 @@
 .draggable {
   display: inline-block;
   position: absolute;
-  width: 15px;
-  height: 15px;
-  background-color: rgba(0, 0, 0, 0.5);
-  border: 1px solid darkcyan;
-  border-radius: 50%;
+  background-color: var(--manatee);
+  box-sizing: border-box;
+  border: 4px solid var(--black-coral);
   z-index: 1000;
 }
