@@ -62,7 +62,7 @@ export const DraggableSurface: React.FC<DraggableSurfaceProps> = ({
     dispatch(setPoints(points.map((el) => getElPositionWithShift(el, { top: POINTER_SIZE / 2, left: POINTER_SIZE / 2 }))));
 
     oldPointerPosition.current = position;
-  }, []);
+  }, [dispatch]);
 
   const endDrag = useCallback(() => {
     moving.current = false;
@@ -82,7 +82,7 @@ export const DraggableSurface: React.FC<DraggableSurfaceProps> = ({
       ref={surfaceDiv}
       style={{
         width,
-        height
+        height,
       }}
       className={styles.draggableSurface}
       onMouseDown={startDrag}
@@ -92,8 +92,8 @@ export const DraggableSurface: React.FC<DraggableSurfaceProps> = ({
       onTouchEnd={endDrag}
     >
       <ImageOverlay width={width} height={height} />
-      <DraggablePointer ref={topRightRef} top={30} left={width - 30} />
       <DraggablePointer ref={topLeftRef} top={30} left={30} />
+      <DraggablePointer ref={topRightRef} top={30} left={width - 30} />
       <DraggablePointer ref={bottomLeftRef} top={height - 30} left={30} />
       <DraggablePointer ref={bottomRightRef} top={height - 30} left={width - 30} />
     </div>

@@ -26,7 +26,7 @@ export default function ImageRegister() {
       { top: (height - 30) || 70, left: 30 },
       { top: (height - 30) || 70, left: (width - 30) || 70 }
     ]))
-  }, [setSize]);
+  }, [setSize, dispatch]);
 
   return (
     <>

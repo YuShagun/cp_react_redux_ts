@@ -1,4 +1,4 @@
-import React, { MutableRefObject } from 'react';
+import React from 'react';
 import { DraggablePointerProps } from './types';
 
 import styles from './DraggablePointer.module.css';
