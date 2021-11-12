@@ -6,15 +6,17 @@ import DraggablePointer from '../DraggablePointer/DraggablePointer';
 import ImageOverlay from '../ImageOverlay/ImageOverlay';
 
 import { DraggableSurfaceProps } from './types';
-import { getElPositionWithShift, getNewPositionWithinBounds, getPointerPosition } from './utils';
+import { getElPosition, getNewPositionWithinBounds, getPointerPosition } from './utils';
 import styles from './DraggableSurface.module.css';
 import { setPoints } from '../../../features/receiptUpload/receiptUploadSlice';
-import { POINTER_SIZE } from '../../../constants';
+import { calculateDefaultPointersPositionsFromImage } from '../../../utils';
 
 export const DraggableSurface: React.FC<DraggableSurfaceProps> = ({
   width,
   height,
 }) => {
+  const pointerPositions = calculateDefaultPointersPositionsFromImage(width, height);
+
   const moving = useRef(false);
   const oldPointerPosition = useRef({ x: 0, y: 0 });
   const target = useRef<HTMLElement | null>(null);
@@ -59,7 +61,8 @@ export const DraggableSurface: React.FC<DraggableSurfaceProps> = ({
     target.current.style.top = `${newPosition.top}px`;
 
     const points = [topLeftRef.current, topRightRef.current, bottomLeftRef.current, bottomRightRef.current];
-    dispatch(setPoints(points.map((el) => getElPositionWithShift(el, { top: POINTER_SIZE / 2, left: POINTER_SIZE / 2 }))));
+
+    dispatch(setPoints(points.map((el) => getElPosition(el))));
 
     oldPointerPosition.current = position;
   }, [dispatch]);
@@ -92,10 +95,10 @@ export const DraggableSurface: React.FC<DraggableSurfaceProps> = ({
       onTouchEnd={endDrag}
     >
       <ImageOverlay width={width} height={height} />
-      <DraggablePointer ref={topLeftRef} top={30} left={30} />
-      <DraggablePointer ref={topRightRef} top={30} left={width - 30} />
-      <DraggablePointer ref={bottomLeftRef} top={height - 30} left={30} />
-      <DraggablePointer ref={bottomRightRef} top={height - 30} left={width - 30} />
+      <DraggablePointer ref={topLeftRef} top={pointerPositions[0].top} left={pointerPositions[0].left} />
+      <DraggablePointer ref={topRightRef}  top={pointerPositions[1].top} left={pointerPositions[1].left} />
+      <DraggablePointer ref={bottomLeftRef}  top={pointerPositions[2].top} left={pointerPositions[2].left} />
+      <DraggablePointer ref={bottomRightRef}  top={pointerPositions[3].top} left={pointerPositions[3].left} />
     </div>
   )
 }

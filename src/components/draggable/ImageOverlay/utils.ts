@@ -1,3 +1,4 @@
+import { SHIFT_POINTS } from "../../../constants";
 import { Point } from "../../../features/receiptUpload/receiptUploadSlice";
 
 export const computePathString = (width: number, height: number, [topLeft, topRight, bottomLeft, bottomRight]: Point[]) => {
@@ -20,12 +21,12 @@ export const computePathString = (width: number, height: number, [topLeft, topRi
     }
   };
 
-  const firstHalf = `${lineTo(topLeft)} ${lineTo(topRight)} ${lineTo(bottomRight)} ${lineTo(corners.bottomRight)} ${lineTo(corners.topRight)}`;
-  const secondHalf = `${lineTo(topLeft)} ${lineTo(bottomLeft)} ${lineTo(bottomRight)} ${lineTo(corners.bottomRight)} ${lineTo(corners.bottomLeft)}`;
+  const firstHalf = `${lineTo(topLeft, SHIFT_POINTS[0])} ${lineTo(topRight, SHIFT_POINTS[1])} ${lineTo(bottomRight, SHIFT_POINTS[3])} ${lineTo(corners.bottomRight)} ${lineTo(corners.topRight)}`;
+  const secondHalf = `${lineTo(topLeft, SHIFT_POINTS[0])} ${lineTo(bottomLeft, SHIFT_POINTS[2])} ${lineTo(bottomRight, SHIFT_POINTS[3])} ${lineTo(corners.bottomRight)} ${lineTo(corners.bottomLeft)}`;
 
   return `path('M 0 0 ${firstHalf} Z ${secondHalf} Z')`;
 }
 
-const lineTo = (point: Point) => `L ${point.left},${point.top}`;
+const lineTo = (point: Point, shift?: Point) => shift ? `L ${point.left + shift.left},${point.top + shift.top}` : `L ${point.left},${point.top}`;
 
-export const getPointString = (point: Point) => `${point.left},${point.top}`;
+export const getPointStringWithShift = (point: Point, shift: Point) => `${point.left + shift.left},${point.top + shift.top}`;

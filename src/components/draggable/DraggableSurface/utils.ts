@@ -2,7 +2,7 @@ import React from 'react';
 import { max, min } from 'lodash';
 
 import { Distance } from './types';
-import { Point } from '../../../features/receiptUpload/receiptUploadSlice';
+import { SHIFT_POINTS } from '../../../constants';
 
 export const getPointerPosition = (event: React.MouseEvent | React.TouchEvent | TouchEvent) => {
   const mouseEvent = event as React.MouseEvent;
@@ -30,16 +30,17 @@ const calcNewPositionValue = (oldVal: string, dist: number) => getPixelValueFrom
 
 const getPixelValueFromString = (value: string) => Number(value.split('px')[0]);
 
-const getElPosition = (el: HTMLElement | null) => ({
+export const getElPosition = (el: HTMLElement | null) => ({
   top: el ? getPixelValueFromString(el.style.top) : 0,
   left: el ? getPixelValueFromString(el.style.left) : 0
 });
 
-export const getElPositionWithShift = (el: HTMLElement | null, shift: Point) => {
+export const getElPositionWithShift = (el: HTMLElement | null, pointerIndex: number) => {
   const elPos = getElPosition(el);
+  const shift = SHIFT_POINTS[pointerIndex];
 
   return {
-    top: elPos.top + shift.top,
-    left: elPos.left + shift.left
+    top: elPos.top - shift.top,
+    left: elPos.left - shift.left
   };
 };

@@ -3,8 +3,9 @@ import { useAppSelector } from '../../../app/hooks';
 import { selectReceiptUploadPoints } from '../../../features/receiptUpload/receiptUploadSlice';
 
 import { ImageOverlayProps } from './types';
-import { computePathString, getPointString } from './utils';
+import { computePathString, getPointStringWithShift } from './utils';
 import styles from './ImageOverlay.module.css';
+import { SHIFT_POINTS } from '../../../constants';
 
 export default function ImageOverlay({
   width,
@@ -16,9 +17,9 @@ export default function ImageOverlay({
     <>
       <svg viewBox={`0 0 ${width} ${height}`} className={styles.svgBox}>
         <polygon
-          points={`${getPointString(points[0])} ${getPointString(points[1])} ${getPointString(points[3])} ${getPointString(points[2])}`}
+          points={`${getPointStringWithShift(points[0], SHIFT_POINTS[0])} ${getPointStringWithShift(points[1], SHIFT_POINTS[1])} ${getPointStringWithShift(points[3], SHIFT_POINTS[3])} ${getPointStringWithShift(points[2], SHIFT_POINTS[2])}`}
           fill='none'
-          stroke='var(--manatee)'
+          stroke='var(--dark-cornflower-blue)'
           strokeWidth='3'
         />
       </svg>

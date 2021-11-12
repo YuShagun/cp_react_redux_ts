@@ -1,8 +1,8 @@
 .draggable {
   display: inline-block;
   position: absolute;
-  background-color: var(--manatee);
+  background-color: var(--usafa-blue);
   box-sizing: border-box;
-  border: 4px solid var(--black-coral);
+  border: 1px solid var(--black-coral);
   z-index: 1000;
 }
