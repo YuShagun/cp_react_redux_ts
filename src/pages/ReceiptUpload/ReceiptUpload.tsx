@@ -7,6 +7,7 @@ import { setImage } from '../../features/receiptUpload/receiptUploadSlice';
 import ImageRegister from '../../components/ImageRegister/ImageRegister';
 
 import styles from './ReceiptUpload.module.css';
+import ReceiptForm from '../../components/ReceiptForm/ReceiptForm';
 
 export default function ReceiptUpload() {
   const dispatch = useAppDispatch();
@@ -30,6 +31,8 @@ export default function ReceiptUpload() {
       </div>
 
       <ImageRegister />
+
+      <ReceiptForm />
     </div>
   )
 }
