@@ -9,12 +9,12 @@ export interface ReceiptField {
 };
 
 export interface ReceiptFormState {
-  data: ReceiptField[];
+  data: {[key: string]: ReceiptField};
   status: 'idle' | 'loading' | 'failed';
 };
 
 const initialState: ReceiptFormState = {
-  data: [],
+  data: {'1': {} as ReceiptField},
   status: 'idle',
 };
 
@@ -22,19 +22,19 @@ export const receiptFormSlice = createSlice({
   name: 'receipt/form',
   initialState,
   reducers: {
-    addField: (state, action: PayloadAction<ReceiptField>) => {
-      state.data.push(action.payload);
+    addField: (state) => {
+      state.data[`${Number(Object.keys(state.data).pop()) + 1}`] = {} as ReceiptField;
     },
-    deleteField: (state, action: PayloadAction<number>) => {
-      state.data.splice(action.payload, 1);
+    deleteField: (state, action: PayloadAction<string>) => {
+      delete state.data[action.payload];
     },
   },
 });
 
 export const { addField, deleteField } = receiptFormSlice.actions;
 
-export const selectReceiptFormFields = (state: RootState) => state.receiptForm.data;
+export const selectReceiptFormFields = (state: RootState) => Object.entries(state.receiptForm.data);
 
-export const selectReceiptFormFieldsByIndex = (state: RootState, index: number) => state.receiptForm.data[index];
+export const selectReceiptFormFieldsByIndex = (state: RootState, key: string) => state.receiptForm.data[key];
 
 export default receiptFormSlice.reducer;
