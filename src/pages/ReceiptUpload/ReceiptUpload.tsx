@@ -2,15 +2,16 @@ import React from 'react';
 import { Button, Grid } from '@mui/material';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 
-import { useAppDispatch } from '../../app/hooks';
-import { setImage } from '../../features/receiptUpload/receiptUploadSlice';
-import ImageRegister from '../../components/ImageRegister/ImageRegister';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { selectReceiptUploadImage, setImage } from '../../features/receiptUpload/receiptUploadSlice';
 
 import styles from './ReceiptUpload.module.css';
 import ReceiptForm from '../../components/ReceiptForm/ReceiptForm';
+import Image from '../../components/Image/Image';
 
 export default function ReceiptUpload() {
   const dispatch = useAppDispatch();
+  const image = useAppSelector(selectReceiptUploadImage);
 
   const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target?.files && event.target.files[0]) {
@@ -30,15 +31,17 @@ export default function ReceiptUpload() {
         </label>
       </div>
 
-      <Grid container>
-        <Grid item xs={7}>
-          <ImageRegister />
-        </Grid>
+      {image &&
+        <Grid container>
+          <Grid item xs={6}>
+            <Image image={image} />
+          </Grid>
 
-        <Grid item xs={4}>
-          <ReceiptForm />
+          <Grid item xs={4}>
+            <ReceiptForm />
+          </Grid>
         </Grid>
-      </Grid>
+      }
     </div>
   )
 }
