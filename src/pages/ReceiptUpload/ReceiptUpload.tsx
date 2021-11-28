@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 
 import { useAppDispatch } from '../../app/hooks';
@@ -30,9 +30,15 @@ export default function ReceiptUpload() {
         </label>
       </div>
 
-      <ImageRegister />
+      <Grid container>
+        <Grid item xs={7}>
+          <ImageRegister />
+        </Grid>
 
-      <ReceiptForm />
+        <Grid item xs={4}>
+          <ReceiptForm />
+        </Grid>
+      </Grid>
     </div>
   )
 }
