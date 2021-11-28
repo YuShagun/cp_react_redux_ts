@@ -31,3 +31,22 @@ export enum POINT_INDEX {
   bottomLeft,
   bottomRight,
 };
+
+export const DEFAULT_TYPES = [
+  {
+    name: 'Другое',
+    value: 0
+  },
+  {
+    name: 'Бакалея',
+    value: 1
+  },
+  {
+    name: 'Товары для дома',
+    value: 2
+  },
+  {
+    name: 'Молочные продукты',
+    value: 3
+  }
+]

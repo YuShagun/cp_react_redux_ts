@@ -1,6 +1,6 @@
 import { ReceiptField } from "../../features/receiptForm/receiptFormSlice";
 
 export interface ReceiptFormGroupProps {
-  index: number;
+  fieldKey: string;
   field: ReceiptField;
 };

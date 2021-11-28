@@ -1,13 +1,9 @@
 import React, { useCallback } from 'react'
 import ReceiptFormGroup from '../ReceiptFormGroup/ReceiptFormGroup'
-import { IconButton, Stack } from '@mui/material'
+import { Grid, IconButton } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { addField, selectReceiptFormFields } from '../../features/receiptForm/receiptFormSlice';
-
-const commonStyles = {
-  margin: 'auto'
-};
 
 export default function ReceiptForm() {
   const fields = useAppSelector(selectReceiptFormFields);
@@ -21,11 +17,11 @@ export default function ReceiptForm() {
   );
 
   const renderFormGroup = useCallback(
-    (field, index) => (
-        <div style={commonStyles} key={index}>
-          <ReceiptFormGroup index={field.key} field={field.value} />
-        </div>
-      ),
+    ([key, value]) => (
+      <Grid item xs={12} key={key}>
+        <ReceiptFormGroup fieldKey={key} field={value} />
+      </Grid>
+    ),
     [],
   );
 
@@ -35,13 +31,21 @@ export default function ReceiptForm() {
   );
 
   return (
-    <Stack>
-      {mapFields()}
-      <div style={commonStyles}>
+    <>
+      <Grid container rowSpacing={3}>
+        {mapFields()}
+      </Grid>
+      <Grid
+        container
+        sx={{
+          marginTop: '1rem',
+          justifyContent: 'center'
+        }}
+      >
         <IconButton onClick={addFieldGroup}>
           <AddIcon />
         </IconButton>
-      </div>
-    </Stack>
+      </Grid>
+    </>
   )
 }
