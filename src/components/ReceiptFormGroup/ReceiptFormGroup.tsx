@@ -4,7 +4,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 
 import { ReceiptFormGroupProps } from './types';
 import { useAppDispatch } from '../../app/hooks';
-import { DEFAULT_TYPES } from '../../constants';
+import { decimalPattern, DEFAULT_TYPES, integerPattern } from '../../constants';
 import { deleteField, editField } from '../../features/receiptForm/receiptFormSlice';
 
 export default function ReceiptFormGroup({
@@ -35,9 +35,16 @@ export default function ReceiptFormGroup({
     type: event.target.value
   }), [editReceiptField]);
 
-  const numberOnChange = useCallback(event => editReceiptField({
-    quantity: event.target.value
-  }), [editReceiptField]);
+  const priceOnChange = useCallback(event => {
+    let value = event.target.value;
+    value = (value.match(decimalPattern)
+      || value.match(integerPattern)
+      || value === '') ? value : field.price;
+
+    editReceiptField({
+      price: value
+    });
+  }, [editReceiptField, field]);
 
   return (
     <Grid container columnSpacing={2}>
@@ -63,8 +70,8 @@ export default function ReceiptFormGroup({
             </FormControl>
           </Grid>
 
-          <Grid item xs={3}>
-            <TextField variant="outlined" type="number" label="Quantity" margin="normal" value={field.quantity} onChange={numberOnChange} />
+          <Grid item xs={4}>
+            <TextField variant="outlined" label="Price" margin="normal" value={field.price} onChange={priceOnChange} />
           </Grid>
         </Grid>
       </Grid>

@@ -3,7 +3,7 @@ import { RootState } from '../../app/store';
 
 export interface ReceiptField {
   name: string;
-  quantity: number;
+  price: string;
   type: number;
 };
 
@@ -18,7 +18,7 @@ export interface ReceiptFormState {
 };
 
 const initialState: ReceiptFormState = {
-  data: {'1': { name: '', quantity: 1, type: 0 }},
+  data: {'1': { name: '', price: '', type: 0 }},
   status: 'idle',
 };
 
@@ -27,7 +27,7 @@ export const receiptFormSlice = createSlice({
   initialState,
   reducers: {
     addField: (state) => {
-      state.data[`${Number(Object.keys(state.data).pop() || 0) + 1}`] = { name: '', quantity: 1, type: 0 };
+      state.data[`${Number(Object.keys(state.data).pop() || 0) + 1}`] = { name: '', price: '', type: 0 };
     },
     editField: (state, action: PayloadAction<EditFieldPayload>) => {
       console.log(action.payload.value);

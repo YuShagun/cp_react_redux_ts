@@ -49,4 +49,8 @@ export const DEFAULT_TYPES = [
     name: 'Молочные продукты',
     value: 3
   }
-]
+];
+
+export const decimalPattern = /^\d+\.\d{0,2}$/;
+
+export const integerPattern = /^\d+$/;
