@@ -17,8 +17,8 @@ export default function ReceiptView() {
       alignItems: 'center'
     }}>
       <div className='row' style={{ margin: '1.5rem' }}>
-        <div className='col' style={{ maxWidth: 400 }}>
-          <img src={`/photos/${receipt?.imagePath}`} style={{ maxWidth: '100%' }} alt="Receipt"></img>
+        <div className='col'>
+          <img src={receipt?.image || `/photos/${receipt?.imagePath}`} style={{ maxHeight: '85vh' }} alt="Receipt"></img>
         </div>
         <ProductList products={receipt?.products} />
       </div >

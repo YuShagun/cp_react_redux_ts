@@ -10,11 +10,12 @@ export default function ReceiptListItem({
   imagePath,
   date,
   total,
+  image,
 }: ReceiptListItemProps) {
 
   return (
     <Link to={`/receipt/${id}`} className={`row ${styles.receiptListItem}`}>
-      <img src={`/photos/${imagePath}`} className={styles.receiptListImage} alt="Receipt"></img>
+      <img src={image || `/photos/${imagePath}`} className={styles.receiptListImage} alt="Receipt"></img>
       <div className={`col ${styles.receiptListData}`}>
         <div className='row'>{date}</div>
         <div className='row'>Place</div>

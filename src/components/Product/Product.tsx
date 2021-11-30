@@ -6,7 +6,7 @@ import styles from './Product.module.css';
 
 export default function Product({ product }: ProductProps) {
   return (
-    <div style={{ margin: '1rem' }}>
+    <div style={{ margin: '1rem 2rem' }}>
       <div>{product.product_name}</div>
       <div className='row'>
         <div className='col'>

@@ -5,5 +5,6 @@ export interface Receipt {
     shopName: string;
     date: string;
     total: string;
-    products: Product[]
+    products: Product[];
+    image?: string;
 }

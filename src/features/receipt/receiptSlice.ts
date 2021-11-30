@@ -26,10 +26,13 @@ export const receiptSlice = createSlice({
     set: (state, action: PayloadAction<ReceiptStateData>) => {
       state.data = action.payload;
     },
+    addReceipt: (state, action: PayloadAction<Receipt>) => {
+      state.data[`${Number(Object.keys(state.data).pop() || 0) + 1}`] = action.payload;
+    }
   },
 });
 
-export const { set } = receiptSlice.actions;
+export const { set, addReceipt } = receiptSlice.actions;
 
 export const selectReceipts = (state: RootState) => state.receipt.data;
 

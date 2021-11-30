@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
+import { DEFAULT_TYPES } from '../../constants';
 
 export interface ReceiptField {
   name: string;
@@ -13,12 +14,12 @@ export interface EditFieldPayload {
 };
 
 export interface ReceiptFormState {
-  data: {[key: string]: ReceiptField};
-  status: 'idle' | 'loading' | 'failed';
+  data: { [key: string]: ReceiptField };
+  status: 'idle' | 'loading' | 'failed' | 'submitting';
 };
 
 const initialState: ReceiptFormState = {
-  data: {'1': { name: '', price: '', type: 0 }},
+  data: { '1': { name: '', price: '', type: 0 } },
   status: 'idle',
 };
 
@@ -28,21 +29,46 @@ export const receiptFormSlice = createSlice({
   reducers: {
     addField: (state) => {
       state.data[`${Number(Object.keys(state.data).pop() || 0) + 1}`] = { name: '', price: '', type: 0 };
+      state.status = 'idle';
     },
     editField: (state, action: PayloadAction<EditFieldPayload>) => {
-      console.log(action.payload.value);
+      // console.log(action.payload.value);
       state.data[action.payload.key] = action.payload.value;
+      state.status = 'idle';
     },
     deleteField: (state, action: PayloadAction<string>) => {
       delete state.data[action.payload];
+      state.status = 'idle';
+    },
+    clearForm: () => initialState,
+    startSubmit: state => {
+      state.status = 'submitting';
+    },
+    endSubmit: state => {
+      state.status = 'idle';
     },
   },
 });
 
-export const { addField, editField, deleteField } = receiptFormSlice.actions;
+export const { addField, editField, deleteField, clearForm, startSubmit, endSubmit } = receiptFormSlice.actions;
 
 export const selectReceiptFormFields = (state: RootState) => Object.entries(state.receiptForm.data);
 
 export const selectReceiptFormFieldsByIndex = (state: RootState, key: string) => state.receiptForm.data[key];
+
+export const selectReceiptProducts = (state: RootState) => {
+  if(state.receiptForm.status !== 'submitting') {
+    return null;
+  }
+  const fields = Object.values(state.receiptForm.data);
+
+  return fields.map(value => ({
+    price: value.price,
+    category: DEFAULT_TYPES[value.type].name,
+    product_name: value.name
+  }));
+};
+
+export const selectReceiptFormStatus = (state: RootState) => state.receiptForm.status;
 
 export default receiptFormSlice.reducer;
