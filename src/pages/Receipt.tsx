@@ -1,16 +1,26 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useParams } from 'react-router'
-import { useAppSelector } from '../app/hooks';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import Loading from '../components/Loading/Loading';
 import ProductList from '../components/ProductList/ProductList';
-import { selectReceipts } from '../features/receipt/receiptSlice';
+import { selectReceipts, selectReceiptsStatus, setStatus } from '../features/receipt/receiptSlice';
 import { ReceiptRouteParams } from '../types';
 
 export default function ReceiptView() {
   const { id } = useParams<ReceiptRouteParams>();
 
-  const receipt = useAppSelector(selectReceipts)[id];
+  const dispatch = useAppDispatch();
 
-  return receipt ? (
+  const receipt = useAppSelector(selectReceipts)[id];
+  const status = useAppSelector(selectReceiptsStatus);
+
+  useEffect(() => {
+    dispatch(setStatus('loading'));
+    setTimeout(() => dispatch(setStatus('idle')), 4000);
+  }, [dispatch]);
+
+
+  return status !== 'loading' ? (
     <div className='col' style={{
       maxWidth: '70%',
       margin: 'auto',
@@ -25,5 +35,5 @@ export default function ReceiptView() {
     </div>
 
   )
-    : <div>Loading</div>
+    : <Loading />
 }
