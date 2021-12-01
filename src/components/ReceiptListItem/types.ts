@@ -4,4 +4,5 @@ export interface ReceiptListItemProps {
   shopName?: string;
   date: string;
   total: string;
+  image?: string;
 }

@@ -2,12 +2,14 @@ import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import counterReducer from '../features/counter/counterSlice';
 import receiptReducer from '../features/receipt/receiptSlice';
 import receiptUploadReducer from '../features/receiptUpload/receiptUploadSlice';
+import receiptFormReducer from '../features/receiptForm/receiptFormSlice';
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
     receipt: receiptReducer,
     receiptUpload: receiptUploadReducer,
+    receiptForm: receiptFormReducer,
   },
 });
 
