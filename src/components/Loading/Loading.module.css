@@ -1,0 +1,91 @@
+:root {
+  --slider-top: 10px;
+  --slider-left: 5px;
+  --slider-bottom: calc(100% - 15px);
+  --icon-size: 60px;
+  --bg-size: 42px;
+  --slider-top-shifted: 13px;
+  --animation-time: 4s;
+}
+
+.animated-container {
+  margin: auto;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  position: relative;
+}
+
+.icon {
+  width: var(--icon-size)!important;
+  height: var(--icon-size)!important;
+  color: white;
+  position: absolute;
+  z-index: 10;
+}
+
+.rectangle {
+  width: var(--bg-size);
+  height: var(--bg-size);
+  border: 2px solid black;
+  box-sizing: border-box;
+  position: absolute;
+  top: var(--slider-top);
+  left: var(--slider-top);
+  z-index: 15;
+}
+
+.slider {
+  border-top: 3px solid black;
+  box-sizing: border-box;
+  width: calc(var(--icon-size) - 2 * var(--slider-left) + 2px);
+  position: absolute;
+  left: var(--slider-left);
+  z-index: 20;
+  animation: slide var(--animation-time) infinite;
+}
+
+.background-animated {
+  height: var(--bg-size);
+  width: var(--bg-size);
+  background-color: var(--true-blue);
+  box-sizing: border-box;
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 2;
+  animation: expand var(--animation-time) infinite;
+}
+
+.background {
+  height: var(--bg-size);
+  width: var(--bg-size);
+  background-color: black;
+  position: absolute;
+  top: var(--slider-top);
+  left: var(--slider-top);
+  z-index: 1;
+}
+
+@keyframes slide {
+  0% {
+    top: var(--slider-top-shifted);
+  }
+  50% {
+    top: var(--slider-bottom);
+  }
+  100% {
+    top: var(--slider-top-shifted);
+  }
+}
+
+@keyframes expand {
+  0% {
+    height: 0;
+  }
+  50% {
+    height: var(--bg-size);
+  }
+  100% {
+    height: 0;
+  }
+}
