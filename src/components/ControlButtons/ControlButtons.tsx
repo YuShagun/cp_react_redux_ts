@@ -7,7 +7,8 @@ import { ControlButtonsProps } from './types';
 
 export default function ControlButtons({
   onSubmit,
-  onCancel
+  onCancel,
+  justifyContent,
 }: ControlButtonsProps) {
   const dispatch = useAppDispatch();
 
@@ -16,14 +17,14 @@ export default function ControlButtons({
 
   useEffect(() => {
     status === 'submitting' && products && onSubmit(products);
-  }, [status, onSubmit]);
+  }, [status, onSubmit, products]);
 
   const saveReceipt = useCallback(() => {
     dispatch(startSubmit());
   }, [dispatch]);
 
   return (
-    <Grid container columnSpacing={2}>
+    <Grid container columnSpacing={2} justifyContent={justifyContent}>
       <Grid item xs='auto'>
         <Button variant='contained' onClick={saveReceipt}>Save</Button>
       </Grid>
