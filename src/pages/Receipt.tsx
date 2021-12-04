@@ -5,7 +5,7 @@ import { Button } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import Loading from '../components/Loading/Loading';
 import ProductList from '../components/ProductList/ProductList';
-import { selectReceipts, selectReceiptsStatus, setStatus } from '../features/receipt/receiptSlice';
+import { deleteReceipt, selectReceipts, selectReceiptsStatus, setStatus } from '../features/receipt/receiptSlice';
 import { ReceiptRouteParams } from '../types';
 
 export default function ReceiptView() {
@@ -27,13 +27,19 @@ export default function ReceiptView() {
     history.push(`/actions/edit?id=${id}`);
   }, [history, id]);
 
+  const onDeleteClick = useCallback(() => {
+    dispatch(deleteReceipt(id));
+    history.push('/');
+  }, [dispatch, id, history]);
+
   return status !== 'loading' ? (
     <div className='col' style={{
       margin: 'auto',
       alignItems: 'center'
     }}>
-      <div className="row" style={{ margin: '1rem', flexDirection: 'row-reverse' }}>
-        <Button variant='outlined' onClick={onEditClick} style={{ margin: '0 2rem' }}>Edit</Button>
+      <div className="row" style={{ margin: '1rem', justifyContent: 'flex-end' }}>
+        <Button variant='contained' onClick={onEditClick} style={{ margin: '0 0.5rem 0 1rem' }}>Edit</Button>
+        <Button variant='outlined' color='error' onClick={onDeleteClick} style={{ margin: '0 2rem 0 0.5rem' }}>Delete</Button>
       </div>
       <div className='row'>
         <div className='col'>
