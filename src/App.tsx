@@ -9,7 +9,8 @@ import { Counter } from './features/counter/Counter';
 import About from './pages/About';
 import Home from './pages/Home';
 import Receipt from './pages/Receipt';
-import ReceiptUpload from './pages/ReceiptUpload/ReceiptUpload';
+import Upload from './pages/ReceiptActions/Upload/Upload';
+import Edit from './pages/ReceiptActions/Edit/Edit';
 
 import logo from './logo.svg';
 import './App.css';
@@ -24,7 +25,8 @@ function App() {
 
       <Switch>
         <Route path="/receipt/:id" component={Receipt} />
-        <Route path='/upload' component={ReceiptUpload} />
+        <Route path='/actions/upload' component={Upload} />
+        <Route path='/actions/edit' component={Edit} />
         <Route path="/about" component={About} />
         <Route path="/app">
 

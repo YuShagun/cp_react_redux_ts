@@ -16,6 +16,11 @@ export interface ReceiptState {
   status: ReceiptStateStatus;
 };
 
+export interface EditReceiptPayload {
+  id: string;
+  fieldsToEdit: Partial<Receipt>;
+};
+
 const initialState: ReceiptState = {
   data,
   status: 'loading',
@@ -34,11 +39,17 @@ export const receiptSlice = createSlice({
     },
     addReceipt: (state, action: PayloadAction<Receipt>) => {
       state.data[`${Number(Object.keys(state.data).pop() || 0) + 1}`] = action.payload;
+    },
+    editReceipt: (state, action: PayloadAction<EditReceiptPayload>) => {
+      state.data[action.payload.id] = {
+        ...state.data[action.payload.id],
+        ...action.payload.fieldsToEdit
+      }
     }
   },
 });
 
-export const { set, setStatus, addReceipt } = receiptSlice.actions;
+export const { set, addReceipt, editReceipt, setStatus } = receiptSlice.actions;
 
 export const selectReceipts = (state: RootState) => state.receipt.data;
 

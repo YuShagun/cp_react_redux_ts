@@ -24,7 +24,7 @@ export default function Header() {
       </div>
       <div className="col">
         <div className="row justify-content-end align-items-center">
-          <Button variant="outlined" component={RouterLink} to='/upload' style={{ marginRight: '0.5rem' }}>Upload receipt</Button>
+          <Button variant="outlined" component={RouterLink} to='/actions/upload' style={{ marginRight: '0.5rem' }}>Upload receipt</Button>
         </div>
       </div>
     </div>

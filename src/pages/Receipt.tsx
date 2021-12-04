@@ -1,5 +1,7 @@
-import React, { useEffect } from 'react'
-import { useParams } from 'react-router'
+import React, { useCallback, useEffect } from 'react';
+import { useHistory, useParams } from 'react-router';
+import { Button } from '@mui/material';
+
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import Loading from '../components/Loading/Loading';
 import ProductList from '../components/ProductList/ProductList';
@@ -8,6 +10,7 @@ import { ReceiptRouteParams } from '../types';
 
 export default function ReceiptView() {
   const { id } = useParams<ReceiptRouteParams>();
+  const history = useHistory();
 
   const dispatch = useAppDispatch();
 
@@ -20,15 +23,31 @@ export default function ReceiptView() {
   }, [dispatch]);
 
 
+  const onEditClick = useCallback(() => {
+    history.push(`/actions/edit?id=${id}`);
+  }, [history]);
+
   return status !== 'loading' ? (
     <div className='col' style={{
-      maxWidth: '70%',
       margin: 'auto',
       alignItems: 'center'
     }}>
-      <div className='row' style={{ margin: '1.5rem' }}>
+      <div className="row" style={{ margin: '1rem', flexDirection: 'row-reverse' }}>
+        <Button variant='outlined' onClick={onEditClick} style={{ margin: '0 2rem' }}>Edit</Button>
+      </div>
+      <div className='row'>
         <div className='col'>
-          <img src={receipt?.image || `/photos/${receipt?.imagePath}`} style={{ maxHeight: '85vh' }} alt="Receipt"></img>
+          <img
+            src={receipt?.image || `/photos/${receipt?.imagePath}`}
+            style={{
+              display: 'block',
+              maxWidth: 'max(200px, 60%)',
+              width: 'auto',
+              height: 'auto',
+              maxHeight: '80vh',
+              margin: 'auto',
+            }}
+            alt="Receipt"/>
         </div>
         <ProductList products={receipt?.products} />
       </div >

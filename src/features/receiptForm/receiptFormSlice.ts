@@ -13,8 +13,12 @@ export interface EditFieldPayload {
   value: ReceiptField;
 };
 
+export interface ReceiptFormStateData {
+  [key: string]: ReceiptField;
+};
+
 export interface ReceiptFormState {
-  data: { [key: string]: ReceiptField };
+  data: ReceiptFormStateData;
   status: 'idle' | 'loading' | 'failed' | 'submitting';
 };
 
@@ -30,6 +34,9 @@ export const receiptFormSlice = createSlice({
     addField: (state) => {
       state.data[`${Number(Object.keys(state.data).pop() || 0) + 1}`] = { name: '', price: '', type: 0 };
       state.status = 'idle';
+    },
+    addFields: (state, action: PayloadAction<ReceiptFormStateData>) => {
+      state.data = action.payload;
     },
     editField: (state, action: PayloadAction<EditFieldPayload>) => {
       // console.log(action.payload.value);
@@ -50,14 +57,14 @@ export const receiptFormSlice = createSlice({
   },
 });
 
-export const { addField, editField, deleteField, clearForm, startSubmit, endSubmit } = receiptFormSlice.actions;
+export const { addField, addFields, editField, deleteField, clearForm, startSubmit, endSubmit } = receiptFormSlice.actions;
 
 export const selectReceiptFormFields = (state: RootState) => Object.entries(state.receiptForm.data);
 
 export const selectReceiptFormFieldsByIndex = (state: RootState, key: string) => state.receiptForm.data[key];
 
 export const selectReceiptProducts = (state: RootState) => {
-  if(state.receiptForm.status !== 'submitting') {
+  if (state.receiptForm.status !== 'submitting') {
     return null;
   }
   const fields = Object.values(state.receiptForm.data);

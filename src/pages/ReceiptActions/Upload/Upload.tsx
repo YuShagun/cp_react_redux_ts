@@ -1,22 +1,22 @@
 import React, { useCallback } from 'react';
+import { useParams } from 'react-router';
 import { Button, Grid } from '@mui/material';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { selectReceiptUploadImage, setImage } from '../../features/receiptUpload/receiptUploadSlice';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { selectReceiptUploadImage, setImage } from '../../../features/receiptUpload/receiptUploadSlice';
 
-import ReceiptForm from '../../components/ReceiptForm/ReceiptForm';
-import Image from '../../components/Image/Image';
-import ControlButtons from '../../components/ControlButtons/ControlButtons';
-import { Product } from '../../types';
-import styles from './ReceiptUpload.module.css';
-import { clearForm, endSubmit } from '../../features/receiptForm/receiptFormSlice';
-import { addReceipt } from '../../features/receipt/receiptSlice';
+import ReceiptForm from '../../../components/ReceiptForm/ReceiptForm';
+import Image from '../../../components/Image/Image';
+import ControlButtons from '../../../components/ControlButtons/ControlButtons';
+import { Product } from '../../../types';
+import styles from '../ReceiptActions.module.css';
+import { clearForm, endSubmit } from '../../../features/receiptForm/receiptFormSlice';
+import { addReceipt } from '../../../features/receipt/receiptSlice';
 
-export default function ReceiptUpload() {
+export default function Upload() {
   const dispatch = useAppDispatch();
   const image = useAppSelector(selectReceiptUploadImage);
-  console.log(image);
 
   const onImageChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target?.files && event.target.files[0]) {
@@ -35,11 +35,9 @@ export default function ReceiptUpload() {
       image
     };
 
-    console.log(receipt);
-
     dispatch(addReceipt(receipt));
     dispatch(endSubmit());
-  }, [image]);
+  }, [image, dispatch]);
 
   const cancelUpload = useCallback(() => {
     dispatch(setImage(''));
@@ -47,7 +45,7 @@ export default function ReceiptUpload() {
   }, [dispatch]);
 
   return (
-    <div className={styles.receiptUpload}>
+    <div className={styles.container}>
       <Grid container columnSpacing={2} justifyContent='space-between' marginBottom='1rem'>
         <Grid item xs='auto'>
           <label htmlFor="contained-button-file">
