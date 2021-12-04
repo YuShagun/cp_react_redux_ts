@@ -1,23 +1,33 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { Button } from '@mui/material';
 
-import { useAppSelector } from '../app/hooks';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import Loading from '../components/Loading/Loading';
 import ProductList from '../components/ProductList/ProductList';
-import { selectReceipts } from '../features/receipt/receiptSlice';
+import { selectReceipts, selectReceiptsStatus, setStatus } from '../features/receipt/receiptSlice';
 import { ReceiptRouteParams } from '../types';
 
 export default function ReceiptView() {
   const { id } = useParams<ReceiptRouteParams>();
   const history = useHistory();
 
+  const dispatch = useAppDispatch();
+
   const receipt = useAppSelector(selectReceipts)[id];
+  const status = useAppSelector(selectReceiptsStatus);
+
+  useEffect(() => {
+    dispatch(setStatus('loading'));
+    setTimeout(() => dispatch(setStatus('idle')), 4000);
+  }, [dispatch]);
+
 
   const onEditClick = useCallback(() => {
     history.push(`/actions/edit?id=${id}`);
   }, [history]);
 
-  return receipt ? (
+  return status !== 'loading' ? (
     <div className='col' style={{
       margin: 'auto',
       alignItems: 'center'
@@ -44,5 +54,5 @@ export default function ReceiptView() {
     </div>
 
   )
-    : <div>Loading</div>
+    : <Loading />
 }
