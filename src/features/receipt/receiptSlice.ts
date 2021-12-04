@@ -44,12 +44,15 @@ export const receiptSlice = createSlice({
       state.data[action.payload.id] = {
         ...state.data[action.payload.id],
         ...action.payload.fieldsToEdit
-      }
-    }
+      };
+    },
+    deleteReceipt: (state, action: PayloadAction<string>) => {
+      delete state.data[action.payload];
+    },
   },
 });
 
-export const { set, addReceipt, editReceipt, setStatus } = receiptSlice.actions;
+export const { set, addReceipt, editReceipt, setStatus, deleteReceipt } = receiptSlice.actions;
 
 export const selectReceipts = (state: RootState) => state.receipt.data;
 
