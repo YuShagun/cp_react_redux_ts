@@ -12,8 +12,10 @@ import { Product } from '../../../types';
 import styles from '../ReceiptActions.module.css';
 import { clearForm, endSubmit } from '../../../features/receiptForm/receiptFormSlice';
 import { addReceipt } from '../../../features/receipt/receiptSlice';
+import { useHistory } from 'react-router';
 
 export default function Upload() {
+  const history = useHistory();
   const dispatch = useAppDispatch();
   const image = useAppSelector(selectReceiptUploadImage);
 
@@ -29,14 +31,16 @@ export default function Upload() {
       imagePath: '',
       shopName: '',
       date: new Date().toLocaleDateString("ru-RU", { day: '2-digit', month: '2-digit', year: 'numeric'}).replaceAll('.', '-'),
-      total: `${products.reduce((price, value) => price + Number(value.price), 0)}`,
+      total: `${products.reduce((price, value) => price + Number(value.price), 0).toFixed(2)}`,
       products,
       image
     };
 
     dispatch(addReceipt(receipt));
     dispatch(endSubmit());
-  }, [image, dispatch]);
+
+    history.push('/');
+  }, [image, dispatch, history]);
 
   const cancelUpload = useCallback(() => {
     dispatch(setImage(''));
