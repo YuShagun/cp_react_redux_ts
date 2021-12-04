@@ -25,7 +25,7 @@ export default function ReceiptView() {
 
   const onEditClick = useCallback(() => {
     history.push(`/actions/edit?id=${id}`);
-  }, [history]);
+  }, [history, id]);
 
   return status !== 'loading' ? (
     <div className='col' style={{

@@ -33,7 +33,7 @@ export default function Edit() {
 
     console.log(fields);
     dispatch(addFields(fields));
-  }, [dispatch]);
+  }, [dispatch, receipt]);
 
   const onSubmit = useCallback((products: Product[]) => {
     const fieldsToEdit = {
@@ -49,11 +49,12 @@ export default function Edit() {
     }));
     dispatch(endSubmit());
     history.push(`/receipt/${id}`);
-  }, [dispatch, id]);
+  }, [dispatch, id, history]);
 
   const cancelUpload = useCallback(() => {
     dispatch(clearForm());
-  }, [dispatch]);
+    history.push(`/receipt/${id}`);
+  }, [dispatch, history, id]);
 
   return (
     <div className={styles.container}>
