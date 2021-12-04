@@ -22,7 +22,7 @@ export default function ReceiptView() {
       margin: 'auto',
       alignItems: 'center'
     }}>
-      <div className="row" style={{ margin: '1rem' }}>
+      <div className="row" style={{ margin: '1rem', flexDirection: 'row-reverse' }}>
         <Button variant='outlined' onClick={onEditClick} style={{ margin: '0 2rem' }}>Edit</Button>
       </div>
       <div className='row'>

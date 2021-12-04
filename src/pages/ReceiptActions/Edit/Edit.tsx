@@ -8,10 +8,13 @@ import Image from '../../../components/Image/Image';
 import ControlButtons from '../../../components/ControlButtons/ControlButtons';
 import { Product } from '../../../types';
 import styles from '../ReceiptActions.module.css';
-import { clearForm, endSubmit } from '../../../features/receiptForm/receiptFormSlice';
+import { addFields, clearForm, endSubmit, ReceiptFormStateData } from '../../../features/receiptForm/receiptFormSlice';
 import { editReceipt, selectReceipts } from '../../../features/receipt/receiptSlice';
+import { DEFAULT_TYPES } from '../../../constants';
+import { useHistory } from 'react-router';
 
 export default function Edit() {
+  const history = useHistory();
   const id = useQuery().get('id') || '';
   const dispatch = useAppDispatch();
   const receipt = useAppSelector(selectReceipts)[id];
@@ -19,12 +22,22 @@ export default function Edit() {
   console.log(id);
 
   useEffect(() => {
-    dispatch(clearForm());
+    const fields = receipt.products.reduce<ReceiptFormStateData>((res, value, index) => {
+      res[`${index}`] = {
+        name: value.product_name,
+        price: value.price,
+        type: DEFAULT_TYPES.find((productType) => productType.name === value.category)?.value || 0,
+      };
+      return res;
+    }, {} as ReceiptFormStateData);
+
+    console.log(fields);
+    dispatch(addFields(fields));
   }, [dispatch]);
 
   const onSubmit = useCallback((products: Product[]) => {
     const fieldsToEdit = {
-      total: `${products.reduce((price, value) => price + Number(value.price), 0)}`,
+      total: `${products.reduce((price, value) => price + Number(value.price), 0).toFixed(2)}`,
       products
     };
 
@@ -35,6 +48,7 @@ export default function Edit() {
       fieldsToEdit
     }));
     dispatch(endSubmit());
+    history.push(`/receipt/${id}`);
   }, [dispatch, id]);
 
   const cancelUpload = useCallback(() => {
