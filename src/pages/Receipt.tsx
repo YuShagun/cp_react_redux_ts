@@ -50,7 +50,7 @@ export default function ReceiptView() {
               maxWidth: 'max(200px, 60%)',
               width: 'auto',
               height: 'auto',
-              maxHeight: '80vh',
+              maxHeight: 'calc(100vh - 11rem)',
               margin: 'auto',
             }}
             alt="Receipt"/>
