@@ -62,7 +62,7 @@ export default function Edit() {
 
       <Grid container marginTop='1rem'>
         <Grid item xs={6}>
-          <Image image={`/photos/${receipt?.imagePath}`} />
+          <Image image={receipt?.image || `/photos/${receipt?.imagePath}`} />
         </Grid>
 
         <Grid item xs={4}>
