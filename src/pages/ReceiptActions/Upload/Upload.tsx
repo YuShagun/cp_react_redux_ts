@@ -66,12 +66,12 @@ export default function Upload() {
       </Grid>
 
       {image &&
-        <Grid container>
-          <Grid item xs={6}>
+        <Grid container rowSpacing={2} justifyContent='center'>
+          <Grid item md={6} xs={12}>
             <Image image={image} />
           </Grid>
 
-          <Grid item xs={4}>
+          <Grid item md={5} lg={4} xs={10}>
             <ReceiptForm />
           </Grid>
         </Grid>
