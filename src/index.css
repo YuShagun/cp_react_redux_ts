@@ -11,3 +11,45 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+:root {
+  --true-blue: #0466c8ff;
+  --usafa-blue: #0353a4ff;
+  --dark-cornflower-blue: #023e7dff;
+  --oxford-blue: #002855ff;
+  --oxford-blue-2: #001845ff;
+  --oxford-blue-3: #001233ff;
+  --independence: #33415cff;
+  --black-coral: #5c677dff;
+  --roman-silver: #7d8597ff;
+  --manatee: #979dacff;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  flex: 1 1 100%;
+  width: 100%;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 100%;
+}
+
+.justify-content-center {
+  justify-content: center;
+}
+
+.justify-content-end {
+  justify-content: end;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.align-items-center {
+  align-items: center;
+}
