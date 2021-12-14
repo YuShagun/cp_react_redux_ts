@@ -3,8 +3,6 @@ import { Link as RouterLink } from 'react-router-dom';
 import Link from '@mui/material/Link';
 import Button from '@mui/material/Button';
 
-import VLine from '../VLine/VLine';
-
 import styles from './Header.module.css';
 
 export default function Header() {
