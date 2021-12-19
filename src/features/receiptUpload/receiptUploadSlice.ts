@@ -38,10 +38,17 @@ export const receiptUploadSlice = createSlice({
     setStatus: (state, action: PayloadAction<ReceiptUploadStatus>) => {
       state.status = action.payload;
     },
+    startProcessing: (state, action: PayloadAction<Point[]>) => {
+      state.data.points = action.payload;
+      state.status = 'processing';
+    },
+    endProcessing: (state) => {
+      state.status = 'processed';
+    }
   },
 });
 
-export const { setImage, setPoints, setStatus } = receiptUploadSlice.actions;
+export const { setImage, setPoints, setStatus, startProcessing, endProcessing } = receiptUploadSlice.actions;
 
 export const selectReceiptUploadState = (state: RootState): ReceiptUploadState => state.receiptUpload;
 

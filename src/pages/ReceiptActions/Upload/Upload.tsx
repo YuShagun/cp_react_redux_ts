@@ -5,18 +5,19 @@ import React, { useCallback } from 'react';
 import { useHistory } from 'react-router';
 
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { selectReceiptUploadState, setImage, setPoints, setStatus } from '../../../features/receiptUpload/receiptUploadSlice';
+import { endProcessing, selectReceiptUploadState, setImage, startProcessing } from '../../../features/receiptUpload/receiptUploadSlice';
 import ReceiptForm from '../../../components/ReceiptForm/ReceiptForm';
 import Image from '../../../components/Image/Image';
 import ControlButtons from '../../../components/ControlButtons/ControlButtons';
 import { Product } from '../../../types';
-import { readAsDataUrlAsync } from '../../../utils';
+import { mapRequestImage, mapRequestPoints, readAsDataUrlAsync } from '../../../utils';
 import { clearForm, endSubmit } from '../../../features/receiptForm/receiptFormSlice';
 import { addReceipt } from '../../../features/receipt/receiptSlice';
 
 import styles from '../ReceiptActions.module.css';
 import { mapPointsFromResponse } from './utils';
 import ImageRegister from '../../../components/ImageRegister/ImageRegister';
+import FormControlButtons from '../../../components/FormControlButtons/FormControlButtons';
 
 export default function Upload() {
   const history = useHistory();
@@ -29,27 +30,34 @@ export default function Upload() {
   const onImageChange = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target?.files && event.target.files[0]) {
       const img = event.target.files[0];
-      dispatch(setImage(URL.createObjectURL(img)));
       const b64Url = await readAsDataUrlAsync(img);
-      const matches = b64Url.match('data:(.+);base64,(.+)');
-      if (matches) {
+      dispatch(setImage(b64Url));
+      const image = mapRequestImage(b64Url);
+      if (image) {
         const response = await axios.post('http://localhost:5000/user/0/image', {
-          image: {
-            mime: matches[1],
-            data: matches[2]
-          }
+          image
         });
 
         const points = mapPointsFromResponse(response.data.detection);
-        console.log(points)
-
-        dispatch(setPoints(points));
-        dispatch(setStatus('processing'))
+        dispatch(startProcessing(points));
       }
     }
   }, [dispatch]);
 
-  const onSubmit = useCallback((products: Product[]) => {
+  const submitCorners = useCallback(async () => {
+    const image = mapRequestImage(data.image);
+    const corners = mapRequestPoints(data.points);
+    const response = await axios.post('http://localhost:5000/user/0/image/crop', {
+      image,
+      corners
+    });
+    
+    if(response.data.status === 'success') {
+      dispatch(endProcessing());
+    }
+  }, [data]);
+
+  const submitReceipt = useCallback((products: Product[]) => {
     const receipt = {
       imagePath: '',
       shopName: '',
@@ -81,11 +89,12 @@ export default function Upload() {
             </Button>
           </label>
         </Grid>
-        {showForm &&
-          <Grid item xs='auto'>
-            <ControlButtons onSubmit={onSubmit} onCancel={cancelUpload} />
-          </Grid>
-        }
+        <Grid item xs='auto'>
+          {showForm ?
+            <FormControlButtons onSubmit={submitReceipt} onCancel={cancelUpload} />
+            : detectCorners && <ControlButtons onSubmit={submitCorners} onCancel={cancelUpload} />
+          }
+        </Grid>
       </Grid>
 
       {detectCorners && <ImageRegister image={data.image} />}
