@@ -1,6 +1,6 @@
 import React, { useCallback, useRef, useEffect } from 'react';
 
-import { useAppDispatch } from '../../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import draggablePointerStyles from '../DraggablePointer/DraggablePointer.module.css';
 import DraggablePointer from '../DraggablePointer/DraggablePointer';
 import ImageOverlay from '../ImageOverlay/ImageOverlay';
@@ -8,14 +8,13 @@ import ImageOverlay from '../ImageOverlay/ImageOverlay';
 import { DraggableSurfaceProps } from './types';
 import { getElPosition, getNewPositionWithinBounds, getPointerPosition } from './utils';
 import styles from './DraggableSurface.module.css';
-import { setPoints } from '../../../features/receiptUpload/receiptUploadSlice';
-import { calculateDefaultPointersPositionsFromImage } from '../../../utils';
+import { selectReceiptUploadPoints, setPoints } from '../../../features/receiptUpload/receiptUploadSlice';
 
 export const DraggableSurface: React.FC<DraggableSurfaceProps> = ({
   width,
   height,
 }) => {
-  const pointerPositions = calculateDefaultPointersPositionsFromImage(width, height);
+  const pointerPositions = useAppSelector(selectReceiptUploadPoints);
 
   const moving = useRef(false);
   const oldPointerPosition = useRef({ x: 0, y: 0 });
@@ -95,10 +94,10 @@ export const DraggableSurface: React.FC<DraggableSurfaceProps> = ({
       onTouchEnd={endDrag}
     >
       <ImageOverlay width={width} height={height} />
-      <DraggablePointer ref={topLeftRef} top={pointerPositions[0].top} left={pointerPositions[0].left} />
-      <DraggablePointer ref={topRightRef}  top={pointerPositions[1].top} left={pointerPositions[1].left} />
-      <DraggablePointer ref={bottomLeftRef}  top={pointerPositions[2].top} left={pointerPositions[2].left} />
-      <DraggablePointer ref={bottomRightRef}  top={pointerPositions[3].top} left={pointerPositions[3].left} />
+      <DraggablePointer ref={topLeftRef} top={pointerPositions[0].top} left={pointerPositions[0].left} color='#f9bbbb' />
+      <DraggablePointer ref={topRightRef}  top={pointerPositions[1].top} left={pointerPositions[1].left} color='#93daf8' />
+      <DraggablePointer ref={bottomLeftRef}  top={pointerPositions[2].top} left={pointerPositions[2].left} color='#c9e5bd' />
+      <DraggablePointer ref={bottomRightRef}  top={pointerPositions[3].top} left={pointerPositions[3].left} color='#e2c7e0' />
     </div>
   )
 }

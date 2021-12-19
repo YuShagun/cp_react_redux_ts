@@ -1,46 +1,77 @@
-import React, { useCallback } from 'react';
 import { Button, Grid } from '@mui/material';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
+import axios from 'axios';
+import React, { useCallback } from 'react';
+import { useHistory } from 'react-router';
 
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { selectReceiptUploadImage, setImage } from '../../../features/receiptUpload/receiptUploadSlice';
-
+import { endProcessing, selectReceiptUploadState, setImage, startProcessing } from '../../../features/receiptUpload/receiptUploadSlice';
 import ReceiptForm from '../../../components/ReceiptForm/ReceiptForm';
 import Image from '../../../components/Image/Image';
 import ControlButtons from '../../../components/ControlButtons/ControlButtons';
 import { Product } from '../../../types';
-import styles from '../ReceiptActions.module.css';
+import { mapRequestImage, mapRequestPoints, readAsDataUrlAsync } from '../../../utils';
 import { clearForm, endSubmit } from '../../../features/receiptForm/receiptFormSlice';
 import { addReceipt } from '../../../features/receipt/receiptSlice';
-import { useHistory } from 'react-router';
+
+import styles from '../ReceiptActions.module.css';
+import { mapPointsFromResponse } from './utils';
+import ImageRegister from '../../../components/ImageRegister/ImageRegister';
+import FormControlButtons from '../../../components/FormControlButtons/FormControlButtons';
 
 export default function Upload() {
   const history = useHistory();
   const dispatch = useAppDispatch();
-  const image = useAppSelector(selectReceiptUploadImage);
+  const { data, status } = useAppSelector(selectReceiptUploadState);
 
-  const onImageChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+  const showForm = status === 'processed';
+  const detectCorners = status === 'processing';
+
+  const onImageChange = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target?.files && event.target.files[0]) {
       const img = event.target.files[0];
-      dispatch(setImage(URL.createObjectURL(img)));
+      const b64Url = await readAsDataUrlAsync(img);
+      dispatch(setImage(b64Url));
+      const image = mapRequestImage(b64Url);
+      if (image) {
+        const response = await axios.post('http://localhost:5000/user/0/image', {
+          image
+        });
+
+        const points = mapPointsFromResponse(response.data.detection);
+        dispatch(startProcessing(points));
+      }
     }
   }, [dispatch]);
 
-  const onSubmit = useCallback((products: Product[]) => {
+  const submitCorners = useCallback(async () => {
+    const image = mapRequestImage(data.image);
+    const corners = mapRequestPoints(data.points);
+    const response = await axios.post('http://localhost:5000/user/0/image/crop', {
+      image,
+      corners
+    });
+    
+    if(response.data.status === 'success') {
+      dispatch(endProcessing());
+    }
+  }, [data]);
+
+  const submitReceipt = useCallback((products: Product[]) => {
     const receipt = {
       imagePath: '',
       shopName: '',
-      date: new Date().toLocaleDateString("ru-RU", { day: '2-digit', month: '2-digit', year: 'numeric'}).replaceAll('.', '-'),
+      date: new Date().toLocaleDateString("ru-RU", { day: '2-digit', month: '2-digit', year: 'numeric' }).replaceAll('.', '-'),
       total: `${products.reduce((price, value) => price + Number(value.price), 0).toFixed(2)}`,
       products,
-      image
+      image: data.image
     };
 
     dispatch(addReceipt(receipt));
     dispatch(endSubmit());
 
     history.push('/');
-  }, [image, dispatch, history]);
+  }, [data, dispatch, history]);
 
   const cancelUpload = useCallback(() => {
     dispatch(setImage(''));
@@ -52,23 +83,26 @@ export default function Upload() {
       <Grid container columnSpacing={2} justifyContent='space-between' marginBottom='1rem'>
         <Grid item xs='auto'>
           <label htmlFor="contained-button-file">
-            <input accept="image/*" id="contained-button-file" multiple type="file" hidden value={image && ''} onChange={onImageChange} />
+            <input accept="image/*" id="contained-button-file" multiple type="file" hidden value={data.image && ''} onChange={onImageChange} />
             <Button variant="contained" component="span" startIcon={<FileUploadIcon />}>
               Upload
             </Button>
           </label>
         </Grid>
-        {image &&
-          <Grid item xs='auto'>
-            <ControlButtons onSubmit={onSubmit} onCancel={cancelUpload} />
-          </Grid>
-        }
+        <Grid item xs='auto'>
+          {showForm ?
+            <FormControlButtons onSubmit={submitReceipt} onCancel={cancelUpload} />
+            : detectCorners && <ControlButtons onSubmit={submitCorners} onCancel={cancelUpload} />
+          }
+        </Grid>
       </Grid>
 
-      {image &&
+      {detectCorners && <ImageRegister image={data.image} />}
+
+      {showForm &&
         <Grid container rowSpacing={2} justifyContent='center'>
           <Grid item md={6} xs={12}>
-            <Image image={image} />
+            <Image image={data.image} />
           </Grid>
 
           <Grid item md={5} lg={4} xs={10}>

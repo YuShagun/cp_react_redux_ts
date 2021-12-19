@@ -7,12 +7,14 @@ export interface Point {
   left: number;
 };
 
+type ReceiptUploadStatus = 'idle' | 'loading' | 'processing' | 'processed' | 'failed';
+
 export interface ReceiptUploadState {
   data: {
     image: string;
     points: Point[];
   };
-  status: 'idle' | 'loading' | 'failed';
+  status: ReceiptUploadStatus;
 };
 
 const initialState: ReceiptUploadState = {
@@ -33,12 +35,22 @@ export const receiptUploadSlice = createSlice({
     setPoints: (state, action: PayloadAction<Point[]>) => {
       state.data.points = action.payload;
     },
+    setStatus: (state, action: PayloadAction<ReceiptUploadStatus>) => {
+      state.status = action.payload;
+    },
+    startProcessing: (state, action: PayloadAction<Point[]>) => {
+      state.data.points = action.payload;
+      state.status = 'processing';
+    },
+    endProcessing: (state) => {
+      state.status = 'processed';
+    }
   },
 });
 
-export const { setImage, setPoints } = receiptUploadSlice.actions;
+export const { setImage, setPoints, setStatus, startProcessing, endProcessing } = receiptUploadSlice.actions;
 
-export const selectReceiptUploadImage = (state: RootState) => state.receiptUpload.data.image;
+export const selectReceiptUploadState = (state: RootState): ReceiptUploadState => state.receiptUpload;
 
 export const selectReceiptUploadPoints = (state: RootState) => state.receiptUpload.data.points;
 
