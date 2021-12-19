@@ -1,17 +1,17 @@
 import React, { useCallback, useRef, useState } from 'react';
 
 import DraggableSurface from '../draggable/DraggableSurface/DraggableSurface';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { selectReceiptUploadImage, setPoints } from '../../features/receiptUpload/receiptUploadSlice';
+import { useAppDispatch } from '../../app/hooks';
+import { setPoints } from '../../features/receiptUpload/receiptUploadSlice';
 
 import styles from './ImageRegister.module.css';
 import { DOUBLE_INSET, INSET } from '../../constants';
 import { calculateDefaultPointersPositionsFromImage } from '../../utils';
+import { ImageRegisterProps } from './types';
 
-export default function ImageRegister() {
+export default function ImageRegister({ image }: ImageRegisterProps) {
   const imageRef = useRef<HTMLImageElement | null>(null);
   const [size, setSize] = useState({ width: 100, height: 100 });
-  const image = useAppSelector(selectReceiptUploadImage);
   const dispatch = useAppDispatch();
 
   const onImageLoad = useCallback((event: React.SyntheticEvent<HTMLImageElement>) => {
