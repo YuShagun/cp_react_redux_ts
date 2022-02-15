@@ -1,3 +1,4 @@
+import { ReceiptField } from "./features/receiptForm/receiptFormSlice";
 import { Point } from "./features/receiptUpload/receiptUploadSlice";
 
 export const calculateDefaultPointersPositionsFromImage = (width: number, height: number) => [
@@ -29,4 +30,10 @@ export const mapRequestImage = (url: string) => {
   } : null;
 };
 
-export const mapRequestPoints = (points: Point[]) => Object.fromEntries(['tl', 'tr', 'bl', 'br'].map((val, ind) => [val, [points[ind].left, points[ind].top]]));
+export const mapRequestPoints = (points: Point[]) => Object.fromEntries(['ul', 'ur', 'bl', 'br'].map((val, ind) => [val, [points[ind].left, points[ind].top]]));
+
+export const mapItemsResonse = (items: String[]) =>  Object.fromEntries(items.map<ReceiptField>(val => ({
+  name: String(val),
+  price: '',
+  type: 0
+})).entries());
