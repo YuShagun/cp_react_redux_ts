@@ -29,4 +29,4 @@ export const mapRequestImage = (url: string) => {
   } : null;
 };
 
-export const mapRequestPoints = (points: Point[]) => Object.fromEntries(['tl', 'tr', 'bl', 'br'].map((val, ind) => [val, [points[ind].left, points[ind].top]]));
+export const mapRequestPoints = (points: Point[]) => Object.fromEntries(['ul', 'ur', 'bl', 'br'].map((val, ind) => [val, [points[ind].left, points[ind].top]]));

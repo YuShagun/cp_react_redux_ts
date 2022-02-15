@@ -34,7 +34,7 @@ export default function Upload() {
       dispatch(setImage(b64Url));
       const image = mapRequestImage(b64Url);
       if (image) {
-        const response = await axios.post('http://localhost:5000/user/0/image', {
+        const response = await axios.post('http://localhost:5000/user/0/detect/receipt', {
           image
         });
 
@@ -53,6 +53,7 @@ export default function Upload() {
     });
     
     if(response.data.status === 'success') {
+      dispatch(setImage(`data:image/${response.data.img.mime};base64,${response.data.img.data}`));
       dispatch(endProcessing());
     }
   }, [data]);
