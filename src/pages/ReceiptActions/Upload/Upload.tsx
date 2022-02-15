@@ -10,8 +10,8 @@ import ReceiptForm from '../../../components/ReceiptForm/ReceiptForm';
 import Image from '../../../components/Image/Image';
 import ControlButtons from '../../../components/ControlButtons/ControlButtons';
 import { Product } from '../../../types';
-import { mapRequestImage, mapRequestPoints, readAsDataUrlAsync } from '../../../utils';
-import { clearForm, endSubmit } from '../../../features/receiptForm/receiptFormSlice';
+import { mapItemsResonse, mapRequestImage, mapRequestPoints, readAsDataUrlAsync } from '../../../utils';
+import { addFields, clearForm, endSubmit } from '../../../features/receiptForm/receiptFormSlice';
 import { addReceipt } from '../../../features/receipt/receiptSlice';
 
 import styles from '../ReceiptActions.module.css';
@@ -55,6 +55,12 @@ export default function Upload() {
     if(response.data.status === 'success') {
       dispatch(setImage(`data:image/${response.data.img.mime};base64,${response.data.img.data}`));
       dispatch(endProcessing());
+
+      const itemsResponse = await axios.post('http://localhost:5000/user/0/detect/items', {
+        image: response.data.img
+      });
+
+      itemsResponse.data.status === 'success' && dispatch(addFields(mapItemsResonse(itemsResponse.data.items)));
     }
   }, [data]);
 
