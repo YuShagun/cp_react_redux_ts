@@ -60,7 +60,7 @@ export default function Edit() {
     <div className={styles.container}>
       <ControlButtons onSubmit={onSubmit} onCancel={cancelUpload} justifyContent='flex-end' />
 
-      <Grid container marginTop='1rem' rowSpacing={2} justifyContent='center'>
+      <Grid container marginTop='1rem' spacing={2} justifyContent='center'>
         <Grid item md={6} xs={12} >
           <Image image={receipt?.image || `/photos/${receipt?.imagePath}`} />
         </Grid>

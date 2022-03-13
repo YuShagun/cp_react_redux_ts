@@ -13,6 +13,7 @@ export interface ReceiptUploadState {
   data: {
     image: string;
     points: Point[];
+    mul: Point;
   };
   status: ReceiptUploadStatus;
 };
@@ -21,6 +22,10 @@ const initialState: ReceiptUploadState = {
   data: {
     image: '',
     points: DEFAULT_POINTS,
+    mul: {
+      top: 1,
+      left: 1
+    },
   },
   status: 'idle',
 };
@@ -38,6 +43,9 @@ export const receiptUploadSlice = createSlice({
     setStatus: (state, action: PayloadAction<ReceiptUploadStatus>) => {
       state.status = action.payload;
     },
+    setMul: (state, action: PayloadAction<Point>) => {
+      state.data.mul = action.payload;
+    },
     startProcessing: (state, action: PayloadAction<Point[]>) => {
       state.data.points = action.payload;
       state.status = 'processing';
@@ -48,7 +56,7 @@ export const receiptUploadSlice = createSlice({
   },
 });
 
-export const { setImage, setPoints, setStatus, startProcessing, endProcessing } = receiptUploadSlice.actions;
+export const { setImage, setPoints, setStatus, setMul, startProcessing, endProcessing } = receiptUploadSlice.actions;
 
 export const selectReceiptUploadState = (state: RootState): ReceiptUploadState => state.receiptUpload;
 

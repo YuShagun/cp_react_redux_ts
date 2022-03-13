@@ -1,3 +1,4 @@
+import { HALF_POINTER_SIZE } from "./constants";
 import { ReceiptField } from "./features/receiptForm/receiptFormSlice";
 import { Point } from "./features/receiptUpload/receiptUploadSlice";
 
@@ -30,7 +31,16 @@ export const mapRequestImage = (url: string) => {
   } : null;
 };
 
-export const mapRequestPoints = (points: Point[]) => Object.fromEntries(['ul', 'ur', 'bl', 'br'].map((val, ind) => [val, [points[ind].left, points[ind].top]]));
+export const mapRequestPoints = (points: Point[], mul: Point) => {
+  const scaledPoints = points.map(point => ({
+    left: Math.round((point.left + HALF_POINTER_SIZE) * mul.left),
+    top: Math.round((point.top + HALF_POINTER_SIZE) * mul.top)
+  }));
+
+  debugger;
+
+  return Object.fromEntries(['ul', 'ur', 'bl', 'br'].map((val, ind) => [val, [scaledPoints[ind].left, scaledPoints[ind].top]]));
+};
 
 export const mapItemsResonse = (items: String[]) =>  Object.fromEntries(items.map<ReceiptField>(val => ({
   name: String(val),

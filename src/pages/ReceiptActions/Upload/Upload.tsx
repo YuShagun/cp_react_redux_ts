@@ -46,7 +46,7 @@ export default function Upload() {
 
   const submitCorners = useCallback(async () => {
     const image = mapRequestImage(data.image);
-    const corners = mapRequestPoints(data.points);
+    const corners = mapRequestPoints(data.points, data.mul);
     const response = await axios.post('http://localhost:5000/user/0/image/crop', {
       image,
       corners
@@ -62,7 +62,7 @@ export default function Upload() {
 
       itemsResponse.data.status === 'success' && dispatch(addFields(mapItemsResonse(itemsResponse.data.items)));
     }
-  }, [data]);
+  }, [data, dispatch]);
 
   const submitReceipt = useCallback((products: Product[]) => {
     const receipt = {
@@ -87,7 +87,7 @@ export default function Upload() {
 
   return (
     <div className={styles.container}>
-      <Grid container columnSpacing={2} justifyContent='space-between' marginBottom='1rem'>
+      <Grid container columnSpacing={2} justifyContent='space-between' marginBottom='1rem' paddingLeft='1rem' paddingRight='1rem'>
         <Grid item xs='auto'>
           <label htmlFor="contained-button-file">
             <input accept="image/*" id="contained-button-file" multiple type="file" hidden value={data.image && ''} onChange={onImageChange} />
@@ -107,7 +107,7 @@ export default function Upload() {
       {detectCorners && <ImageRegister image={data.image} />}
 
       {showForm &&
-        <Grid container rowSpacing={2} justifyContent='center'>
+        <Grid container spacing={2} justifyContent='center'>
           <Grid item md={6} xs={12}>
             <Image image={data.image} />
           </Grid>

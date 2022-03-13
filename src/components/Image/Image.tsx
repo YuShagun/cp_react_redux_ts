@@ -13,7 +13,8 @@ export default function Image({
         display: 'block',
         height: 'auto',
         maxHeight: 'calc(100vh - 11rem)',
-        margin: 'auto'
+        margin: 'auto',
+        maxWidth: '100%'
       }}
       alt="Receipt"
     />

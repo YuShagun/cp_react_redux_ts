@@ -1,32 +1,34 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Grid } from '@mui/material';
 
 import DraggableSurface from '../draggable/DraggableSurface/DraggableSurface';
 
 import styles from './ImageRegister.module.css';
-import { DOUBLE_INSET, INSET } from '../../constants';
 import { ImageRegisterProps } from './types';
 
 export default function ImageRegister({ image }: ImageRegisterProps) {
   const imageRef = useRef<HTMLImageElement | null>(null);
-  const [size, setSize] = useState({ width: 100, height: 100 });
+  const [size, setSize] = useState({ width: 100, height: 100, naturalWidth: 100, naturalHeight: 100 });
 
   const onImageLoad = useCallback((event: React.SyntheticEvent<HTMLImageElement>) => {
-    const width = (event.currentTarget.naturalWidth || 0) + DOUBLE_INSET;
-    const height = (event.currentTarget.naturalHeight || 0) + DOUBLE_INSET;
     setSize({
-      width,
-      height
+      width: event.currentTarget.width,
+      height: event.currentTarget.height,
+      naturalWidth: event.currentTarget.naturalWidth,
+      naturalHeight: event.currentTarget.naturalHeight
     });
-  }, [setSize]);
+  }, [image, setSize]);
 
   return (
-    <>
-      {
-        image && <>
-          <DraggableSurface {...size} />
-          <img ref={imageRef} src={image} onLoad={onImageLoad} alt="Receipt" className={styles.image} style={{ margin: INSET }} />
-        </>
-      }
-    </>
+    <Grid container sx={{ position: 'relative' }}>
+      <Grid item xs={12} className={styles.gridItem}>
+        {
+          image && <>
+            <DraggableSurface {...size} />
+            <img ref={imageRef} src={image} onLoad={onImageLoad} alt="Receipt" className={styles.image} />
+          </>
+        }
+      </Grid>
+    </Grid>
   )
 }
