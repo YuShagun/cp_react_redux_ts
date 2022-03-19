@@ -1,5 +1,6 @@
 import React, { useCallback, useRef, useEffect } from 'react';
 
+import { selectReceiptUploadPoints, setPoints } from '../../../features/receiptUpload/receiptUploadSlice';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import draggablePointerStyles from '../DraggablePointer/DraggablePointer.module.css';
 import DraggablePointer from '../DraggablePointer/DraggablePointer';
@@ -8,13 +9,10 @@ import ImageOverlay from '../ImageOverlay/ImageOverlay';
 import { DraggableSurfaceProps } from './types';
 import { getElPosition, getNewPositionWithinBounds, getPointerPosition } from './utils';
 import styles from './DraggableSurface.module.css';
-import { selectReceiptUploadPoints, setMul, setPoints } from '../../../features/receiptUpload/receiptUploadSlice';
 
 export const DraggableSurface: React.FC<DraggableSurfaceProps> = ({
   width,
   height,
-  naturalWidth,
-  naturalHeight,
 }) => {
   const pointerPositions = useAppSelector(selectReceiptUploadPoints);
 
@@ -29,13 +27,6 @@ export const DraggableSurface: React.FC<DraggableSurfaceProps> = ({
   const bottomRightRef = useRef<HTMLDivElement | null>(null);
 
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(setMul({
-      top: naturalHeight / height,
-      left: naturalWidth / width
-    }));
-  }, [width, height, naturalHeight, naturalWidth, dispatch]);
 
   const startDrag = useCallback((event: React.MouseEvent | React.TouchEvent) => {
     const curTarget = event.target as HTMLElement;

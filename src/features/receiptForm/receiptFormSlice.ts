@@ -36,7 +36,6 @@ export const receiptFormSlice = createSlice({
       state.status = 'idle';
     },
     addFields: (state, action: PayloadAction<ReceiptFormStateData>) => {
-      console.log(action.payload);
       state.data = action.payload;
     },
     editField: (state, action: PayloadAction<EditFieldPayload>) => {

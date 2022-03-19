@@ -9,5 +9,7 @@
 }
 
 .gridItem {
-  padding: 3rem;
+  --padding: 3rem;
+  --inner-size: calc(100% - var(--padding) * 2);
+  padding: var(--padding);
 }
