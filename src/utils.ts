@@ -1,3 +1,4 @@
+import { IRequestImage, IRequestPoints } from "./app/requests/types";
 import { HALF_POINTER_SIZE } from "./constants";
 import { ReceiptField } from "./features/receiptForm/receiptFormSlice";
 import { Point } from "./features/receiptUpload/receiptUploadSlice";
@@ -23,7 +24,7 @@ export const readAsDataUrlAsync = (file: Blob | File) => new Promise<string>((re
 
 export const parseBase64ImageURL = (url: string) => url.match('data:(.+);base64,(.+)');
 
-export const mapRequestImage = (url: string) => {
+export const mapRequestImage = (url: string): IRequestImage | null => {
   const matches = parseBase64ImageURL(url);
   return matches ? {
     mime: matches[1],
@@ -31,13 +32,11 @@ export const mapRequestImage = (url: string) => {
   } : null;
 };
 
-export const mapRequestPoints = (points: Point[], mul: Point) => {
+export const mapRequestPoints = (points: Point[], mul: Point): IRequestPoints => {
   const scaledPoints = points.map(point => ({
     left: Math.round((point.left + HALF_POINTER_SIZE) * mul.left),
     top: Math.round((point.top + HALF_POINTER_SIZE) * mul.top)
   }));
-
-  debugger;
 
   return Object.fromEntries(['ul', 'ur', 'bl', 'br'].map((val, ind) => [val, [scaledPoints[ind].left, scaledPoints[ind].top]]));
 };
