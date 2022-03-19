@@ -1,3 +1,10 @@
+:root {
+  --header-height: 4.5rem;
+  --header-margin: 0.5rem;
+  --header-full-height: calc(var(--header-height) + var(--header-margin));
+  --page-content-height: calc(100% - var(--header-full-height));
+}
+
 .link {
   padding: 0 1rem !important;
   margin: 0 0.5rem !important;
@@ -8,8 +15,10 @@
 }
 
 .linkContainer {
+  box-sizing: border-box;
   margin-bottom: 0.5rem;
   padding: 1rem 0;
   background-color: var(--true-blue);
-  color: white
+  color: white;
+  height: var(--header-height);
 }

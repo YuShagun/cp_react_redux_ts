@@ -4,4 +4,12 @@
   -moz-user-select: none;
   -o-user-select: none;
   user-select: none;
+
+  width: 100%;
+}
+
+.gridItem {
+  --padding: 3rem;
+  --inner-size: calc(100% - var(--padding) * 2);
+  padding: var(--padding);
 }

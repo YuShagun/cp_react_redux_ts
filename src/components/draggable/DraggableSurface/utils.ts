@@ -2,7 +2,7 @@ import React from 'react';
 import { max, min } from 'lodash';
 
 import { Distance } from './types';
-import { SHIFT_POINTS } from '../../../constants';
+import { HALF_POINTER_SIZE, SHIFT_POINTS } from '../../../constants';
 
 export const getPointerPosition = (event: React.MouseEvent | React.TouchEvent | TouchEvent) => {
   const mouseEvent = event as React.MouseEvent;
@@ -22,8 +22,8 @@ export const getPointerPosition = (event: React.MouseEvent | React.TouchEvent | 
 };
 
 export const getNewPositionWithinBounds = (style: CSSStyleDeclaration, dist: Distance, ownRect: DOMRect, boundsRect: DOMRect) => ({
-    top: min([boundsRect.height - ownRect.height, max([0, calcNewPositionValue(style.top, dist.y)])]) || 0,
-    left: min([boundsRect.width - ownRect.width, max([0, calcNewPositionValue(style.left, dist.x)])]) || 0
+    top: min([boundsRect.height - ownRect.height / 2, max([-HALF_POINTER_SIZE, calcNewPositionValue(style.top, dist.y)])]),
+    left: min([boundsRect.width - ownRect.width / 2, max([-HALF_POINTER_SIZE, calcNewPositionValue(style.left, dist.x)])])
 });
 
 const calcNewPositionValue = (oldVal: string, dist: number) => getPixelValueFromString(oldVal) + dist;

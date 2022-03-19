@@ -1,4 +1,15 @@
 .draggableSurface {
   position: absolute;
   box-sizing: border-box;
+
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.draggableInner {
+  position: relative;
+  top: 3rem;
+  left: 3rem;
 }

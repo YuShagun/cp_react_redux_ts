@@ -19,8 +19,6 @@ export default function Edit() {
   const dispatch = useAppDispatch();
   const receipt = useAppSelector(selectReceipts)[id];
 
-  console.log(id);
-
   useEffect(() => {
     const fields = receipt.products.reduce<ReceiptFormStateData>((res, value, index) => {
       res[`${index}`] = {
@@ -31,7 +29,6 @@ export default function Edit() {
       return res;
     }, {} as ReceiptFormStateData);
 
-    console.log(fields);
     dispatch(addFields(fields));
   }, [dispatch, receipt]);
 
@@ -40,8 +37,6 @@ export default function Edit() {
       total: `${products.reduce((price, value) => price + Number(value.price), 0).toFixed(2)}`,
       products
     };
-
-    console.log(fieldsToEdit);
 
     dispatch(editReceipt({
       id,
@@ -60,7 +55,7 @@ export default function Edit() {
     <div className={styles.container}>
       <ControlButtons onSubmit={onSubmit} onCancel={cancelUpload} justifyContent='flex-end' />
 
-      <Grid container marginTop='1rem' rowSpacing={2} justifyContent='center'>
+      <Grid container marginTop='1rem' spacing={2} justifyContent='center'>
         <Grid item md={6} xs={12} >
           <Image image={receipt?.image || `/photos/${receipt?.imagePath}`} />
         </Grid>

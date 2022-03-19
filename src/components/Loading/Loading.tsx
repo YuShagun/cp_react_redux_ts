@@ -3,10 +3,12 @@ import { Grid } from '@mui/material';
 import ArticleSharpIcon from '@mui/icons-material/ArticleSharp';
 
 import styles from './Loading.module.css';
+import { LoadingProps } from './types';
 
-export default function Loading() {
+export default function Loading({ overlay = false }: LoadingProps) {
   return (
-    <Grid container direction="column" height="80vh" justifyContent="center" alignItems="center">
+    <Grid container direction="column" height="100%" justifyContent="center" alignItems="center" position="relative" top={0}>
+      {overlay && <div className={styles.overlay}/> }
       <div className={styles['animated-container']}>
       <div className={styles.slider} />
       <div className={styles.rectangle} />
