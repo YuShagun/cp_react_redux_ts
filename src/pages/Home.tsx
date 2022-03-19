@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react'
+import { Grid } from '@mui/material';
+
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import Loading from '../components/Loading/Loading';
 
@@ -20,7 +22,9 @@ export default function Home() {
     <>
       {
         status === 'loading'
-          ? <Loading />
+          ? <Grid container height="var(--page-content-height)">
+            <Loading />
+          </Grid>
           : <div className='col' style={{
             maxWidth: '70%',
             margin: 'auto',

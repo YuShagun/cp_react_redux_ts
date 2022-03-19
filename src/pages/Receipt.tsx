@@ -50,5 +50,7 @@ export default function ReceiptView() {
       </Grid>
     </Grid>
   )
-    : <Loading />
+    : <Grid container height="var(--page-content-height)">
+      <Loading />
+    </Grid>
 }
